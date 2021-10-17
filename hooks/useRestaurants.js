@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react';
 import { GOOGLE_API_KEY } from '@env';
 
-export const useRestaurants = (location, radius) => {
+export const useRestaurants = (latitude, longitude, radius) => {
   const [restaurants, setRestaraunts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     // Check location has been retrieved from device
-    if (!location || !radius) {
+    if (!latitude || !longitude || !radius) {
       setError("Can't get location of device");
       return;
     }
-
-    const { lat, lng } = location;
 
     (async () => {
       setError(null);
       setLoading(true);
 
       // 1st request the nearest restaurants, five results are returned to prevent too many API request when requesting images
-      const rests = await fetchRestaurants(lat, lng, radius);
+      const rests = await fetchRestaurants(latitude, longitude, radius);
 
       if (!rests) {
         setLoading(false);
@@ -32,7 +30,7 @@ export const useRestaurants = (location, radius) => {
       setRestaraunts(restaurantsWithPhotos);
       setLoading(false);
     })();
-  }, [location, radius]);
+  }, [latitude, longitude, radius]);
 
   return {
     restaurants,
@@ -42,9 +40,9 @@ export const useRestaurants = (location, radius) => {
 };
 
 // TODO: Better error handling
-const fetchRestaurants = async (lat, lng, radius, limit = 5) => {
+const fetchRestaurants = async (latitude, longitude, radius, limit = 5) => {
   // Build URL
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat}%2C${lng}&radius=${radius}&type=restaurant&key=${GOOGLE_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude}%2C${longitude}&radius=${radius}&type=restaurant&key=${GOOGLE_API_KEY}`;
 
   try {
     const response = await fetch(url);

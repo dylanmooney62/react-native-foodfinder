@@ -6,8 +6,16 @@ import { useRestaurants } from '../hooks/useRestaurants';
 import RestaurantList from '../components/RestaurantList';
 
 const Home = () => {
-  const location = useContext(LocationContext);
-  const { restaurants, loading, error } = useRestaurants(location, 1500);
+  const { location } = useContext(LocationContext);
+
+  const latitude = location?.latitude;
+  const longitude = location?.longitude;
+
+  const { restaurants, loading, error } = useRestaurants(
+    latitude,
+    longitude,
+    1500
+  );
 
   if (loading) {
     return <Text>Loading...</Text>;
