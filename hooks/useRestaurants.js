@@ -51,11 +51,6 @@ const fetchRestaurants = async (lat, lng, radius, limit = 5) => {
 
     const data = await response.json();
 
-    // Check request has results
-    if (data.status !== 'OK') {
-      return [];
-    }
-
     return data.results.slice(0, limit);
   } catch (error) {
     console.error(error);
@@ -80,11 +75,6 @@ const fetchRestaurantPhotos = async (restaurants, maxWidth) => {
         };
       } catch (error) {
         console.error(error);
-
-        return {
-          ...restaurant,
-          imageUrl: '',
-        };
       }
     })
   );

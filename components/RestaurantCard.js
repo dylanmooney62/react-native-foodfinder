@@ -33,18 +33,12 @@ const RestaurantCard = ({ title, rating, address, isFavourite, imageUrl }) => {
         </View>
         <ImageGradient src={imageUrl} />
       </View>
-      <View style={styles.details}>
+      <View style={styles.body}>
         <View>
           <Text style={styles.title}>{title}</Text>
-          <Rating value={Math.floor(rating)} />
-        </View>
-        <View style={styles.buttons}>
           <Text style={styles.address}>{address}</Text>
-          <IconButton
-            backgroundColor={COLORS.black}
-            Icon={<Navigation fill="#FFF" />}
-          />
         </View>
+        <Rating value={Math.floor(rating)} />
       </View>
     </View>
   );
@@ -67,28 +61,15 @@ const styles = StyleSheet.create({
     elevation: 2,
     overflow: 'hidden',
   },
-  details: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-  },
-  title: {
-    fontSize: 16,
-    marginBottom: 12,
-    color: COLORS.black,
-    fontFamily: 'Ubuntu_500Medium',
-  },
-  img: {
+  header: {
+    position: 'relative',
     height: 200,
-    resizeMode: 'cover',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
   },
-  buttons: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  favourite: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 300,
   },
   distance: {
     display: 'flex',
@@ -100,19 +81,22 @@ const styles = StyleSheet.create({
     zIndex: 300,
     padding: 12,
   },
-  header: {
-    position: 'relative',
-    height: 200,
+  body: {
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   address: {
     fontFamily: 'Ubuntu_400Regular',
     flexWrap: 'wrap',
     flex: 1,
   },
-  favourite: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 300,
+  title: {
+    fontSize: 16,
+    marginBottom: 12,
+    color: COLORS.black,
+    fontFamily: 'Ubuntu_700Bold',
   },
 });

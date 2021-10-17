@@ -6,14 +6,25 @@ import {
   Ubuntu_500Medium,
   Ubuntu_700Bold,
 } from '@expo-google-fonts/ubuntu';
-import RestaurantList from './components/RestaurantList';
-import { useLocation } from './hooks/useLocation';
-import { useRestaurants } from './hooks/useRestaurants';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+
+import Home from './screens/Home';
+import Settings from './screens/Settings';
+import Map from './screens/Map';
+import Favourites from './screens/Favourites';
+
+import HomeIcon from './assets/icons/home.svg';
+import MapIcon from './assets/icons/map.svg';
+import FavouritesIcon from './assets/icons/star-outline.svg';
+import SettingsIcon from './assets/icons/settings.svg';
+
+import { COLORS } from './theme';
+import { LocationProvider } from './context/LocationContext';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const { location, error: locationErr } = useLocation();
-  const { restaurants, loading, error } = useRestaurants(location, 1500);
-
   let [fontsLoaded] = useFonts({
     Ubuntu_400Regular,
     Ubuntu_500Medium,
@@ -24,38 +35,68 @@ export default function App() {
     return <Text>Fonts loading...</Text>;
   }
 
-  if (loading) {
-    <Text>Loading...</Text>;
-  }
-
-  if (error || locationErr) {
-    return <Text>{error || locationErr}</Text>;
-  }
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>FoodFinder</Text>
-      <RestaurantList restaurants={restaurants} />
-    </View>
+    <>
+      <LocationProvider>
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarShowLabel: false,
+              tabBarStyle: {
+                height: 64,
+              },
+              headerStyle: {
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                elevation: 0,
+              },
+              headerTitleStyle: {
+                fontFamily: 'Ubuntu_700Bold',
+                fontSize: 24,
+              },
+            }}
+          >
+            <Tab.Screen
+              name="Home"
+              component={Home}
+              options={{
+                tabBarIcon: ({ focused }) => (
+                  <HomeIcon fill={focused ? COLORS.black : COLORS.gray} />
+                ),
+                title: 'FoodFinder',
+              }}
+            />
+            <Tab.Screen
+              name="Map"
+              component={Map}
+              options={{
+                tabBarIcon: ({ focused }) => (
+                  <MapIcon fill={focused ? COLORS.black : COLORS.gray} />
+                ),
+                headerShown: false,
+              }}
+            />
+            <Tab.Screen
+              name="Favourites"
+              component={Favourites}
+              options={{
+                tabBarIcon: ({ focused }) => (
+                  <FavouritesIcon fill={focused ? COLORS.black : COLORS.gray} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Settings"
+              component={Settings}
+              options={{
+                tabBarIcon: ({ focused }) => (
+                  <SettingsIcon fill={focused ? COLORS.black : COLORS.gray} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </LocationProvider>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 22,
-    paddingTop: 32,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 24,
-    fontFamily: 'Ubuntu_700Bold',
-  },
-  item: {
-    backgroundColor: 'red',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-});
