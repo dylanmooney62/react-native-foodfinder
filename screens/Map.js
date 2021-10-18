@@ -1,29 +1,13 @@
 import React, { useContext } from 'react';
-import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { LocationContext } from '../context/LocationContext';
-import { useRestaurants } from '../hooks/useRestaurants';
+import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
+import { RestaurantContext } from '../context/RestaurantContext';
 
 const Map = () => {
-  const { location } = useContext(LocationContext);
+  const { restaurants, location } = useContext(RestaurantContext);
 
-  const latitude = location?.latitude;
-  const longitude = location?.longitude;
-
-  const { restaurants, loading, error } = useRestaurants(
-    latitude,
-    longitude,
-    1500
-  );
-
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text>Something went wrong...</Text>;
-  }
+  const { latitude, longitude } = location.coords;
 
   return (
     <View style={styles.container}>
@@ -36,17 +20,19 @@ const Map = () => {
           longitudeDelta: 0.0121,
         }}
       >
-        {restaurants.map(({ name, vicinity, geometry: { location } }, idx) => (
-          <Marker
-            key={idx}
-            coordinate={{
-              latitude: location.lat,
-              longitude: location.lng,
-            }}
-            title={name}
-            description={vicinity}
-          />
-        ))}
+        {restaurants.map(
+          ({ place_id, name, vicinity, geometry: { location } }) => (
+            <Marker
+              key={place_id}
+              coordinate={{
+                latitude: location.lat,
+                longitude: location.lng,
+              }}
+              title={name}
+              description={vicinity}
+            />
+          )
+        )}
       </MapView>
     </View>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import {
   useFonts,
   Ubuntu_400Regular,
@@ -20,7 +20,7 @@ import FavouritesIcon from './assets/icons/star-outline.svg';
 import SettingsIcon from './assets/icons/settings.svg';
 
 import { COLORS } from './theme';
-import { LocationProvider } from './context/LocationContext';
+import { RestaurantProvider } from './context/RestaurantContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +37,7 @@ export default function App() {
 
   return (
     <>
-      <LocationProvider>
+      <RestaurantProvider>
         <NavigationContainer>
           <Tab.Navigator
             screenOptions={{
@@ -96,7 +96,7 @@ export default function App() {
             />
           </Tab.Navigator>
         </NavigationContainer>
-      </LocationProvider>
+      </RestaurantProvider>
     </>
   );
 }
