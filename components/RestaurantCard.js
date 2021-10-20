@@ -10,7 +10,7 @@ import StarOutline from '../assets/icons/star-outline.svg';
 import IconButton from './IconButton';
 import ImageGradient from './ImageGradient';
 
-const RestaurantCard = ({ restaurant, isFavourite, onFavourite }) => {
+const RestaurantCard = ({ restaurant, isFavourite, onFavourite, distance }) => {
   const { name, rating, vicinity, imageUrl } = restaurant;
 
   return (
@@ -19,7 +19,7 @@ const RestaurantCard = ({ restaurant, isFavourite, onFavourite }) => {
         <View style={styles.distance}>
           <Navigation fill={'#fff'} width={16} height={16} />
           <Text style={{ color: 'white', fontSize: 16, marginLeft: 12 }}>
-            0.1m
+            {distance}miles
           </Text>
         </View>
         <View style={styles.favourite}>

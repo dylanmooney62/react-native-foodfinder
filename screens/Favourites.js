@@ -1,33 +1,18 @@
 import React, { useContext } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native';
 import { FavouritesContext } from '../context/FavouritesContext';
-import RestaurantCard from '../components/RestaurantCard';
+import { RestaurantContext } from '../context/RestaurantContext';
+import RestaurantCardList from '../components/RestaurantCardList';
 
 const Favourites = () => {
-  const { favourites, toggleFavourite } = useContext(FavouritesContext);
+  const { favourites } = useContext(FavouritesContext);
+  const { location } = useContext(RestaurantContext);
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={favourites}
-        renderItem={({ item: restaurant }) => (
-          <RestaurantCard
-            restaurant={restaurant}
-            isFavourite={true}
-            onFavourite={toggleFavourite}
-          />
-        )}
-        keyExtractor={(item) => item.place_id}
-      />
-    </View>
-  );
+  if (favourites.length === 0) {
+    return <Text>No favourites found!</Text>;
+  }
+
+  return <RestaurantCardList restaurants={favourites} location={location} />;
 };
 
 export default Favourites;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-});
