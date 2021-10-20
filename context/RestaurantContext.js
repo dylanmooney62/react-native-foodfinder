@@ -42,7 +42,7 @@ export const RestaurantProvider = ({ children }) => {
         // Loop through and request image for all restaurants
         const restaurantData = await Promise.all(
           // Results has been sliced to prevent large number of requests for protoype applicaiton
-          results.slice(0, 5).map(async (restaurant) => {
+          results.slice(0, 2).map(async (restaurant) => {
             const ref = restaurant.photos[0].photo_reference;
 
             try {

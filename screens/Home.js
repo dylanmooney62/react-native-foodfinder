@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useContext } from 'react';
 import { RestaurantContext } from '../context/RestaurantContext';
-import RestaurantList from '../components/RestaurantList';
+import { FavouritesContext } from '../context/FavouritesContext';
+import RestaurantCard from '../components/RestaurantCard';
 
 const Home = () => {
   const { restaurants, loading, error } = useContext(RestaurantContext);
+  const { favourites, toggleFavourite } = useContext(FavouritesContext);
 
   if (loading) {
     return <Text>Loading...</Text>;
@@ -21,7 +23,23 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <RestaurantList restaurants={restaurants} />
+      <FlatList
+        data={restaurants}
+        renderItem={({ item: restaurant }) => {
+          const isFavourite = favourites.some(
+            ({ place_id }) => place_id === restaurant.place_id
+          );
+
+          return (
+            <RestaurantCard
+              restaurant={restaurant}
+              isFavourite={isFavourite}
+              onFavourite={toggleFavourite}
+            />
+          );
+        }}
+        keyExtractor={(item) => item.place_id}
+      />
     </View>
   );
 };

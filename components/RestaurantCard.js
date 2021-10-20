@@ -10,7 +10,9 @@ import StarOutline from '../assets/icons/star-outline.svg';
 import IconButton from './IconButton';
 import ImageGradient from './ImageGradient';
 
-const RestaurantCard = ({ title, rating, address, isFavourite, imageUrl }) => {
+const RestaurantCard = ({ restaurant, isFavourite, onFavourite }) => {
+  const { name, rating, vicinity, imageUrl } = restaurant;
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -29,14 +31,15 @@ const RestaurantCard = ({ title, rating, address, isFavourite, imageUrl }) => {
                 <StarOutline fill={'#FFF'} width={32} height={32} />
               )
             }
+            onPress={() => onFavourite(restaurant)}
           />
         </View>
         <ImageGradient src={imageUrl} />
       </View>
       <View style={styles.body}>
         <View>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.address}>{address}</Text>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.address}>{vicinity}</Text>
         </View>
         <Rating value={Math.floor(rating)} />
       </View>
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 2,
     overflow: 'hidden',
+    marginBottom: 16,
   },
   header: {
     position: 'relative',
